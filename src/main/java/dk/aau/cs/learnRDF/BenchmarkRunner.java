@@ -75,7 +75,7 @@ public class BenchmarkRunner {
             }
             qs.setCorrectQueries(countSuccess);
             qs.setFailedQueries(countFail);
-            evaluationResults.put(qs, res); //@Tomer Note: you were using an object has key without defining equals and hashvalue !?
+            evaluationResults.put(qs, res);
             System.out.println(String.format("Parsed %s /  %s :\tsuccess %s\tfail to read %s ", countParsed, queries.size(), countSuccess, countFail ));
         }
 
@@ -107,14 +107,12 @@ public class BenchmarkRunner {
             for (Map.Entry<QuerySet, int[]> p : evaluationResults.entrySet()) {
                 QuerySet qs = p.getKey();
                 int[] stats = p.getValue();
-                String[] data1 = {qs.getName(), Integer.toString(qs.getCorrectQueries())}; //Some queries contain mistakes, this makes sure that numbers take into account only those we managed to parse
+                String[] data1 = {qs.getName(), Integer.toString(qs.getCorrectQueries())};
                 for (int i : stats){
-                    data1 = ArrayUtils.add(data1, Integer.toString(i)); // TODO: this really generates so many arrays to just add 1 value. Why are you not using a Good'ol'ArrayList?
+                    data1 = ArrayUtils.add(data1, Integer.toString(i));
                 }
                 data1 = ArrayUtils.add(data1, Integer.toString(qs.getFailedQueries()));
-
-                data1 = ArrayUtils.add(data1, Integer.toString(qs.listQueries().size())); // @Tomer: you where parsing the folder structures every time to get the list of queries!
-
+                data1 = ArrayUtils.add(data1, Integer.toString(qs.listQueries().size()));
                 writer.writeNext(data1);
             }
         }
@@ -190,10 +188,8 @@ public class BenchmarkRunner {
         }
 
 
-        BenchmarkRunner br = new BenchmarkRunner(stopOnError, verbose); //TODO: handle either to stop at first error or to ignore errors
+        BenchmarkRunner br = new BenchmarkRunner(stopOnError, verbose);
         List<QuerySet> toEvaluate = new ArrayList<>();
-        //TODO: This is better if is parsed and instantiated from a config file,  I will try to use `configuration.properties`
-
 
         toEvaluate.add(new QuerySet("DBpedia", new File(queryFolder, "DBpedia"), new String[]{}));
         toEvaluate.add(new QuerySet("LDBC", new File(queryFolder, "LDBC"), new String[]{"queries.txt"}));
@@ -208,8 +204,8 @@ public class BenchmarkRunner {
 
         try {
             File out = new File(outFolder, "br_test_out.csv");
-            if (!out.exists() || out.delete()) { //check if exists and delete if does //TODO: Silent delete of folders/files is dangerous business
-                assertTrue("Failed to create output file", out.createNewFile()); //create outfile //TODO: I don't think this is how one should use assert :)
+            if (!out.exists() || out.delete()) { //check if exists and delete if does
+                assertTrue("Failed to create output file", out.createNewFile()); //create outfile 
             }
             toEvaluate.removeIf(q -> !enabledQuerySets.isEmpty() && !enabledQuerySets.contains(q.getName()));
             System.out.println("Parsing "+ String.join(", ", toEvaluate.stream().map(QuerySet::getName).collect(Collectors.toCollection(ArrayList::new))));
