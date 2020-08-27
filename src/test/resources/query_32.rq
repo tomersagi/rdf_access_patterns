@@ -1,0 +1,26 @@
+# Popular names per birthplace
+#added before 2016-10
+PREFIX wdt: <http://www.example.org/wdt#> 
+PREFIX wd: <http://www.example.org/wd#> 
+PREFIX p: <http://www.example.org/p#> 
+PREFIX ps: <http://www.example.org/ps#> 
+PREFIX pq: <http://www.example.org/pq#> 
+PREFIX wikibase: <http://www.example.org/wikibase#> 
+PREFIX schema: <http://www.example.org/schema#> 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+
+
+SELECT ?cid ?firstname (COUNT(*) AS ?count)
+WHERE
+{
+  ?pid wdt:P19 wd:Q64.
+  ?pid wdt:P735 ?cid.
+    ?cid rdfs:label ?firstname 
+    FILTER((LANG(?firstname)) = "en") .
+  
+}
+GROUP BY ?cid ?firstname
+ORDER BY DESC(?count) ?firstname
+LIMIT 50

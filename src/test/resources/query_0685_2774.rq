@@ -1,0 +1,20 @@
+PREFIX dcterms: <http://purl.org/dc/terms/> 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX dbpedia: <http://www.dbpedia.com/#> 
+PREFIX owl: <http://www.owl.com/#> 
+PREFIX dbpedia-owl: <http://www.dbpedia.com/owl#> 
+PREFIX yago: <http://www.yago.com/#> 
+PREFIX foaf: <http://xmlns.com/foaf/0.1/> 
+PREFIX dbpprop: <http://dbpedia.org/property/> 
+PREFIX dbprop: <http://dbpedia.org/property/> 
+PREFIX geo: <http://geonames.com/> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+SELECT DISTINCT ?x ?y ?0 from <http://dbpedia3.9> where {
+  ?0 rdfs:label ?label0 .
+  ?label0 bif:contains '"Mark Twain"' .
+  {{?x dbo:author ?0}} .
+  {{?x dbo:numberOfPages ?y}} .
+}
+

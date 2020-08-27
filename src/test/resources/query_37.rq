@@ -1,0 +1,22 @@
+# Software applications ranked in descending order by the number of writable file formats
+PREFIX wdt: <http://www.example.org/wdt#> 
+PREFIX wd: <http://www.example.org/wd#> 
+PREFIX p: <http://www.example.org/p#> 
+PREFIX ps: <http://www.example.org/ps#> 
+PREFIX pq: <http://www.example.org/pq#> 
+PREFIX wikibase: <http://www.example.org/wikibase#> 
+PREFIX schema: <http://www.example.org/schema#> 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+
+
+
+SELECT ?app (COUNT(?format) AS ?count)
+WHERE {
+  ?app (p:P31/ps:P31/wdt:P279) wd:Q7397 .
+  ?app wdt:P1072 ?format .    
+}
+
+GROUP BY ?app
+ORDER BY DESC(?count)

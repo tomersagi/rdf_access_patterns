@@ -1,0 +1,18 @@
+#What organization founded later than 1899 was the owner in 2011 of the Chrysler Corporation?
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>  
+PREFIX ns: <http://rdf.freebase.com/ns/>
+SELECT DISTINCT ?x
+WHERE {
+FILTER (?x != ns:m.01_bp)
+FILTER (!isLiteral(?x) || lang(?x) = '' || langMatches(lang(?x), 'en'))
+ns:m.01_bp ns:organization.organization.parent ?y .
+?y ns:organization.organization_relationship.parent ?x .
+FILTER(NOT EXISTS {?y ns:organization.organization_relationship.to ?sk0} || 
+EXISTS {?y ns:organization.organization_relationship.to ?sk1 . 
+FILTER(xsd:datetime(?sk1) >= "2011-01-01"^^xsd:date) })
+FILTER(NOT EXISTS {?y ns:organization.organization_relationship.from ?sk2} || 
+EXISTS {?y ns:organization.organization_relationship.from ?sk3 . 
+FILTER(xsd:datetime(?sk3) <= "2011-12-31"^^xsd:date) })
+?x ns:organization.organization.date_founded ?num .
+FILTER (?num > "1899"^^xsd:gYear) . 
+}

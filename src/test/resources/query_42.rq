@@ -1,0 +1,29 @@
+#All museums (including subclass of museum) in Barcelona with coordinates
+PREFIX wdt: <http://www.example.org/wdt#> 
+PREFIX wd: <http://www.example.org/wd#> 
+PREFIX p: <http://www.example.org/p#> 
+PREFIX ps: <http://www.example.org/ps#> 
+PREFIX pq: <http://www.example.org/pq#> 
+PREFIX psv: <http://www.example.org/psv#> 
+PREFIX wikibase: <http://www.example.org/wikibase#> 
+PREFIX schema: <http://www.example.org/schema#> 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+
+
+SELECT DISTINCT ?item ?name ?coord ?lat ?lon
+WHERE
+{
+
+ ?item wdt:P131* wd:Q1492 ;
+         wdt:P31/wdt:P279* wd:Q33506 ;
+         wdt:P625 ?coord ;
+         p:P625 ?coordinate .
+ ?item rdfs:label ?name .
+
+ ?coordinate psv:P625 ?coordinate_node .
+ ?coordinate_node wikibase:geoLatitude ?lat .
+ ?coordinate_node wikibase:geoLongitude ?lon .
+}
+ORDER BY ASC (?name)
