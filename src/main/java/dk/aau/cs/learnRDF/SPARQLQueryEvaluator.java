@@ -217,6 +217,8 @@ public class SPARQLQueryEvaluator {
                         res[AccessPattern.PIVOT_O.ordinal()] = true;
                     if (!t.getSubject().isConcrete() && t.subjectMatches(t2.getPredicate()))
                         res[AccessPattern.PIVOT_SP.ordinal()] = true;
+                    if (!t.getObject().isConcrete() && t.objectMatches(t2.getPredicate()))
+                        res[AccessPattern.PIVOT_OS.ordinal()] = true;
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }

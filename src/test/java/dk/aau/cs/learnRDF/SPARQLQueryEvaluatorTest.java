@@ -18,10 +18,14 @@ public class SPARQLQueryEvaluatorTest {
     @Test
     public void evaluateQuery() throws IOException {
         String[] filenames = new String[]{
+                "po_pivot_ex.txt",
                 "query_16", "ps_pivot_ex.txt", "query_0685_2774.rq","query_10.rq","query_11.rq","WebQTest-1458.rq"
                 ,"query_42.rq", "query_2.rq","F5.txt", "query_32.rq", "query_37.rq", "query_01", "ask.sparql"
                 };
         AccessPattern[][] patterns = new AccessPattern[][]{
+                {
+                    CONSTANTS_P, PIVOT_S, PIVOT_O, PIVOT_OP, RETURN_EXISTS, RETURN_AGG, TRAVERSAL_out1
+                },
                 { CONSTANTS_PO,
                         CONSTANTS_P,
                         TRAVERSAL_in1,
