@@ -17,20 +17,11 @@ public class SPARQLQueryEvaluatorTest {
 
     @Test
     public void evaluateQuery() throws IOException {
-        String[] filenames = new String[]{"query_0685_2774.rq","query_10.rq","query_11.rq","WebQTest-1458.rq","query_16","query_42.rq", "query_2.rq","F5.txt", "query_32.rq", "query_37.rq", "query_01", "ask.sparql"};
+        String[] filenames = new String[]{
+                "query_16", "ps_pivot_ex.txt", "query_0685_2774.rq","query_10.rq","query_11.rq","WebQTest-1458.rq"
+                ,"query_42.rq", "query_2.rq","F5.txt", "query_32.rq", "query_37.rq", "query_01", "ask.sparql"
+                };
         AccessPattern[][] patterns = new AccessPattern[][]{
-                {RETURN_DISTINCT},
-                {CONSTANTS_S,CONSTANTS_O, RANGE_S,
-                        TRAVERSAL_out1,TRAVERSAL_in1,
-                        RETURN_DISTINCT},
-                {CONSTANTS_PO,
-                CONSTANTS_P,
-                RANGE_S,
-                TRAVERSAL_in1,TRAVERSAL_out1,
-                RETURN_DISTINCT,RETURN_EXISTS,
-                PIVOT_S},
-                {RETURN_EXISTS,RETURN_DISTINCT,RANGE_S, RANGE_O,TRAVERSAL_outK
-                        , TRAVERSAL_out1, CONSTANTS_P, CONSTANTS_SP, PIVOT_OS},
                 { CONSTANTS_PO,
                         CONSTANTS_P,
                         TRAVERSAL_in1,
@@ -44,6 +35,22 @@ public class SPARQLQueryEvaluatorTest {
                         PIVOT_S
 
                 },
+                {
+                        CONSTANTS_PO, PIVOT_S, PIVOT_SP, RETURN_DISTINCT, TRAVERSAL_in1, RETURN_EXISTS, TRAVERSAL_out1
+                },
+                {RETURN_DISTINCT, CONSTANTS_P, CONSTANTS_PO, PIVOT_S, TRAVERSAL_inK,TRAVERSAL_out1, TRAVERSAL_in1, PIVOT_OS
+                        , RETURN_EXISTS},
+                {CONSTANTS_S,CONSTANTS_O, RANGE_S,
+                        TRAVERSAL_out1,TRAVERSAL_in1,
+                        RETURN_DISTINCT},
+                {CONSTANTS_PO,
+                CONSTANTS_P,
+                RANGE_S,
+                TRAVERSAL_in1,TRAVERSAL_out1,
+                RETURN_DISTINCT,RETURN_EXISTS,
+                PIVOT_S},
+                {RETURN_EXISTS,RETURN_DISTINCT,RANGE_S, RANGE_O,TRAVERSAL_outK
+                        , TRAVERSAL_out1, CONSTANTS_P, CONSTANTS_SP, PIVOT_OS},
                 {
                 CONSTANTS_P, CONSTANTS_PO,
                 TRAVERSAL_outK, TRAVERSAL_in1, TRAVERSAL_out1, TRAVERSAL_inP_STAR, RETURN_EXISTS,//TRAVERSAL_outP_STAR reversed - awaiting matteo's approval

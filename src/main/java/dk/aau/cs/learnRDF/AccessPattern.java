@@ -26,6 +26,8 @@ public enum AccessPattern {
     PIVOT_S("Pivot","S"),
     PIVOT_OS("Pivot","OS"),
     PIVOT_O("Pivot","O"),
+    PIVOT_OP("Pivot","OP"),
+    PIVOT_SP("Pivot","SP"),
     WRITE_I("Write","Insert"),
     WRITE_D("Write","Delete")
     ;

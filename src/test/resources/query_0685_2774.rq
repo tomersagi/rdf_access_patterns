@@ -10,6 +10,8 @@ PREFIX dbpprop: <http://dbpedia.org/property/>
 PREFIX dbprop: <http://dbpedia.org/property/> 
 PREFIX geo: <http://geonames.com/> 
 PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX  bif:  <bif:>
+
 
 SELECT DISTINCT ?x ?y ?0 from <http://dbpedia3.9> where {
   ?0 rdfs:label ?label0 .

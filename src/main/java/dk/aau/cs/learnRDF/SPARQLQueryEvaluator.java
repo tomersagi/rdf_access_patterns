@@ -21,6 +21,7 @@ import java.util.*;
 
 
 public class SPARQLQueryEvaluator {
+
     private final String posedQuery;
     private final boolean verbose;
 
@@ -198,8 +199,11 @@ public class SPARQLQueryEvaluator {
      */
     private void apCheckPivot(BGP bgp, boolean[] res) {
         Set<Triple> allTriplesOrPaths = new HashSet<>(bgp.getBody());
-        for (TriplePath tp : bgp.getTriplePaths().keySet())
-            allTriplesOrPaths.add(new Triple(tp.getSubject(), tp.getSubject(),tp.getObject()));
+        for (TriplePath tp : bgp.getTriplePaths().keySet()) {
+            Node p = tp.getPredicate()!=null ? tp.getPredicate() : new NullNode();
+            allTriplesOrPaths.add(new Triple(tp.getSubject(), p, tp.getObject()));
+        }
+
         for (Triple t : allTriplesOrPaths) {
             for (Triple t2 : allTriplesOrPaths) {
                 if (t.equals(t2))
@@ -211,6 +215,8 @@ public class SPARQLQueryEvaluator {
                         res[AccessPattern.PIVOT_OS.ordinal()] = true;
                     if (!t.getObject().isConcrete() && t.objectMatches(t2.getObject()))
                         res[AccessPattern.PIVOT_O.ordinal()] = true;
+                    if (!t.getSubject().isConcrete() && t.subjectMatches(t2.getPredicate()))
+                        res[AccessPattern.PIVOT_SP.ordinal()] = true;
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
