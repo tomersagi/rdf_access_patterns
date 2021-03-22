@@ -24,7 +24,7 @@ public class SPARQLQueryEvaluatorTest {
                 };
         AccessPattern[][] patterns = new AccessPattern[][]{
                 {
-                    CONSTANTS_P, PIVOT_S, PIVOT_O, PIVOT_OP, RETURN_EXISTS, RETURN_AGG, TRAVERSAL_out1
+                    CONSTANTS_P, PIVOT_S, PIVOT_O, PIVOT_SP, PIVOT_OP, RETURN_EXISTS, RETURN_AGG, TRAVERSAL_out1
                 },
                 { CONSTANTS_PO,
                         CONSTANTS_P,
