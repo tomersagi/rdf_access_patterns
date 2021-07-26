@@ -27,8 +27,10 @@ public enum AccessPattern {
     PIVOT_S("Pivot","S"),
     PIVOT_OS("Pivot","OS"),
     PIVOT_O("Pivot","O"),
+    PIVOT_2wS("Pivot","2-way - same position"),
     PIVOT_OP("Pivot","OP"),
     PIVOT_SP("Pivot","SP"),
+    PIVOT_2wD("Pivot","2-way - different position"),
     PIVOT_NS("Pivot","N-way Star"),
     PIVOT_NA("Pivot","N-way Arbitrary shape"),
     WRITE_I("Write","Insert"),
@@ -53,6 +55,6 @@ public enum AccessPattern {
 
     @Override
     public String toString() {
-        return category + "," + type;
+        return category + ": " + type;
     }
 }
