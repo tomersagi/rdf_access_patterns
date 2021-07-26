@@ -42,7 +42,7 @@ public class SPARQLQueryEvaluatorTest {
                 {
                         CONSTANTS_PO, PIVOT_S, PIVOT_2wS, PIVOT_SP, PIVOT_2wD, RETURN_DISTINCT, TRAVERSAL_in1, RETURN_EXISTS, TRAVERSAL_out1
                 }, //ps_pivot_ex
-                {RETURN_DISTINCT, CONSTANTS_P, CONSTANTS_PO, PIVOT_S, TRAVERSAL_inK,TRAVERSAL_out1, TRAVERSAL_in1, PIVOT_OS, PIVOT_2wD
+                {RETURN_DISTINCT, CONSTANTS_P, CONSTANTS_PO, PIVOT_S, TRAVERSAL_inK,TRAVERSAL_out1, TRAVERSAL_in1, PIVOT_OS, PIVOT_2wD, PIVOT_2wS
                         , RETURN_EXISTS}, //query_0685_2774
                 {CONSTANTS_S,CONSTANTS_O, RANGE_S,
                         TRAVERSAL_out1,TRAVERSAL_in1,

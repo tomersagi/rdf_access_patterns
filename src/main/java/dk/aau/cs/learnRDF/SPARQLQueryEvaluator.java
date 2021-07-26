@@ -237,6 +237,11 @@ public class SPARQLQueryEvaluator {
             }
         }
 
+        //2-way agrregates
+        res[AccessPattern.PIVOT_2wS.ordinal()] = (res[AccessPattern.PIVOT_S.ordinal()] || res[AccessPattern.PIVOT_O.ordinal()]);
+        res[AccessPattern.PIVOT_2wD.ordinal()] = (res[AccessPattern.PIVOT_SP.ordinal()]
+                || res[AccessPattern.PIVOT_OP.ordinal()]
+                || res[AccessPattern.PIVOT_OS.ordinal()]);
     }
 
     /**
