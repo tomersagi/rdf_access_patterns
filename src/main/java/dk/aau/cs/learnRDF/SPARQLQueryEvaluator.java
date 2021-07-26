@@ -51,6 +51,8 @@ public class SPARQLQueryEvaluator {
                 }
                 return res;
             }
+            if (query.hasOrderBy() && !query.hasGroupBy())
+                res[AccessPattern.RETURN_SORTED.ordinal()]=true;
             ArrayList<BGP> bgps = getBGPs(query);
             for (BGP bgp : bgps) {
                 apCheckReturn(bgp, res);
@@ -209,22 +211,112 @@ public class SPARQLQueryEvaluator {
                 if (t.equals(t2))
                     continue;
                 try {
-                    if (!t.getSubject().isConcrete() && t.subjectMatches(t2.getSubject()))
+                    if (!t.getSubject().isConcrete() && t.subjectMatches(t2.getSubject())) {
                         res[AccessPattern.PIVOT_S.ordinal()] = true;
-                    if (!t.getObject().isConcrete() && t.objectMatches(t2.getSubject()))
+                        res[test_n_way(t, t2, allTriplesOrPaths, AccessPattern.PIVOT_S).ordinal()] = true;
+                    }
+                    if (!t.getObject().isConcrete() && t.objectMatches(t2.getSubject())) {
                         res[AccessPattern.PIVOT_OS.ordinal()] = true;
-                    if (!t.getObject().isConcrete() && t.objectMatches(t2.getObject()))
+                        res[test_n_way(t, t2, allTriplesOrPaths, AccessPattern.PIVOT_OS).ordinal()] = true;
+                    }
+                    if (!t.getObject().isConcrete() && t.objectMatches(t2.getObject())) {
                         res[AccessPattern.PIVOT_O.ordinal()] = true;
-                    if (!t.getSubject().isConcrete() && t.subjectMatches(t2.getPredicate()))
+                        res[test_n_way(t, t2, allTriplesOrPaths, AccessPattern.PIVOT_O).ordinal()] = true;
+                    }
+                    if (!t.getSubject().isConcrete() && t.subjectMatches(t2.getPredicate())) {
                         res[AccessPattern.PIVOT_SP.ordinal()] = true;
-                    if (!t.getObject().isConcrete() && t.objectMatches(t2.getPredicate()))
+                        res[test_n_way(t, t2, allTriplesOrPaths, AccessPattern.PIVOT_SP).ordinal()] = true;
+                    }
+                    if (!t.getObject().isConcrete() && t.objectMatches(t2.getPredicate())) {
                         res[AccessPattern.PIVOT_OP.ordinal()] = true;
+                        res[test_n_way(t, t2, allTriplesOrPaths, AccessPattern.PIVOT_OP).ordinal()] = true;
+                    }
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
             }
         }
 
+    }
+
+    /**
+     * Given two tuples, a bgp and an access pattern from the pivot dimension, returns if the BGP contains
+     * an n-way access pattern, either star or arbitrary.
+     * @param t first tuple
+     * @param t2 second tuple
+     * @param allTriples all triples and triples paths from the bgp
+     * @param pivot 2-way access pattern that got us here. If it is a single position pattern, it may
+     *              lead to an n-way star or an n-way arbitrary. If it is a 2-position pivot
+     * @return n-way pivot if such exists or the incoming pvot pattern otherwise
+     */
+    private AccessPattern test_n_way(Triple t, Triple t2, Set<Triple> allTriples, AccessPattern pivot) {
+        boolean star = false;
+        boolean arbitrary = false;
+        for (Triple t3 : allTriples) {
+            if (!t.equals(t3) && !t2.equals(t3)) {
+                //other triple
+                switch (pivot){
+                    case PIVOT_O:
+                    {
+                        if (t3.objectMatches(t2.getObject())) {
+                            star = true;
+                        }
+                        if (t3.subjectMatches(t2.getObject()) || t3.predicateMatches(t2.getObject())) {
+                            arbitrary = true;
+                        }
+                        break;
+                    }
+                    case PIVOT_S:
+                    {
+                        if (t3.subjectMatches(t2.getSubject())) {
+                            star = true;
+                        }
+                        if (t3.objectMatches(t2.getSubject()) || t3.predicateMatches(t2.getSubject())) {
+                            arbitrary = true;
+                        }
+                        break;
+                    }
+                    case PIVOT_OS: //Already two-position pivot
+                    {
+                        if (t.subjectMatches(t2.getObject()) && (t3.objectMatches(t2.getObject()) ||
+                                t3.subjectMatches(t2.getObject()) || t3.predicateMatches(t2.getObject()))) //t.S->t2.O + t2.O->t3.Any
+                            arbitrary = true;
+                        if (t.objectMatches(t2.getSubject()) && (t3.objectMatches(t2.getSubject()) ||
+                                t3.subjectMatches(t2.getSubject()) || t3.predicateMatches(t2.getSubject()))) //t.O->t2.S + t2.S->t3.Any
+                            arbitrary = true;
+                    }
+                    break;
+                    case PIVOT_OP: //Already two-position pivot
+                    {
+                        if (t.predicateMatches(t2.getObject()) && (t3.objectMatches(t2.getObject()) ||
+                                t3.subjectMatches(t2.getObject()) || t3.predicateMatches(t2.getObject()))) //t.P->t2.O + t2.O->t3.Any
+                            arbitrary = true;
+                        if (t.objectMatches(t2.getPredicate()) && (t3.objectMatches(t2.getPredicate()) ||
+                                t3.subjectMatches(t2.getPredicate()) || t3.predicateMatches(t2.getPredicate()))) //t.O->t2.P + t2.P->t3.Any
+                            arbitrary = true;
+                    }
+                    break;
+                    case PIVOT_SP: //Already two-position pivot
+                    {
+                        if (t.predicateMatches(t2.getSubject()) && (t3.objectMatches(t2.getSubject()) ||
+                                t3.subjectMatches(t2.getSubject()) || t3.predicateMatches(t2.getSubject()))) //t.P->t2.S + t2.S->t3.Any
+                            arbitrary = true;
+                        if (t.subjectMatches(t2.getPredicate()) && (t3.objectMatches(t2.getPredicate()) ||
+                                t3.subjectMatches(t2.getPredicate()) || t3.predicateMatches(t2.getPredicate()))) //t.S->t2.P + t2.P->t3.Any
+                            arbitrary = true;
+                    }
+                    break;
+                    //TBD PO and PS pivots in the github repo
+                }
+
+            }
+        }
+        if (arbitrary)
+            return AccessPattern.PIVOT_NA;
+        else if (star)
+            return AccessPattern.PIVOT_NS;
+        else
+            return pivot;
     }
 
     /**

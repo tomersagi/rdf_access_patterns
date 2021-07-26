@@ -25,7 +25,7 @@ public class SPARQLQueryEvaluatorTest {
         AccessPattern[][] patterns = new AccessPattern[][]{
                 {
                     CONSTANTS_P, PIVOT_S, PIVOT_O, PIVOT_SP, PIVOT_OP, RETURN_EXISTS, RETURN_AGG, TRAVERSAL_out1
-                },
+                }, //po_pivot_ex
                 { CONSTANTS_PO,
                         CONSTANTS_P,
                         TRAVERSAL_in1,
@@ -36,45 +36,50 @@ public class SPARQLQueryEvaluatorTest {
                         RETURN_DISTINCT,
                         RETURN_AGG,
                         PIVOT_OS,
-                        PIVOT_S
-
-                },
+                        PIVOT_S,
+                        PIVOT_NS //on ?post
+                }, //query_16
                 {
                         CONSTANTS_PO, PIVOT_S, PIVOT_SP, RETURN_DISTINCT, TRAVERSAL_in1, RETURN_EXISTS, TRAVERSAL_out1
-                },
+                }, //ps_pivot_ex
                 {RETURN_DISTINCT, CONSTANTS_P, CONSTANTS_PO, PIVOT_S, TRAVERSAL_inK,TRAVERSAL_out1, TRAVERSAL_in1, PIVOT_OS
-                        , RETURN_EXISTS},
+                        , RETURN_EXISTS}, //query_0685_2774
                 {CONSTANTS_S,CONSTANTS_O, RANGE_S,
                         TRAVERSAL_out1,TRAVERSAL_in1,
-                        RETURN_DISTINCT},
+                        RETURN_DISTINCT, RETURN_SORTED}, //query_10
                 {CONSTANTS_PO,
                 CONSTANTS_P,
                 RANGE_S,
                 TRAVERSAL_in1,TRAVERSAL_out1,
                 RETURN_DISTINCT,RETURN_EXISTS,
-                PIVOT_S},
+                PIVOT_S, PIVOT_NS}, //query_11
                 {RETURN_EXISTS,RETURN_DISTINCT,RANGE_S, RANGE_O,TRAVERSAL_outK
-                        , TRAVERSAL_out1, CONSTANTS_P, CONSTANTS_SP, PIVOT_OS},
+                        , TRAVERSAL_out1, CONSTANTS_P, CONSTANTS_SP, PIVOT_OS
+                }, //WebQTest-1458
                 {
                 CONSTANTS_P, CONSTANTS_PO,
                 TRAVERSAL_outK, TRAVERSAL_in1, TRAVERSAL_out1, TRAVERSAL_inP_STAR, RETURN_EXISTS,//TRAVERSAL_outP_STAR reversed - awaiting matteo's approval
-                RETURN_DISTINCT, PIVOT_S, PIVOT_OS
-                },
+                RETURN_DISTINCT,RETURN_SORTED
+                        , PIVOT_S, PIVOT_OS,
+                        PIVOT_NA, //on ?coordinate_node
+                        PIVOT_NS //on ?item
+                }, //query_42
                 { CONSTANTS_P, CONSTANTS_PO,
                         RANGE_C, RANGE_S,
                         TRAVERSAL_in1,TRAVERSAL_out1,
                         TRAVERSAL_inP_STAR,
                         RETURN_VAL,RETURN_EXISTS,
-                        PIVOT_S
-                },
+                        PIVOT_S,
+                        PIVOT_NS //on ?event
+                },  //query_2
                 { CONSTANTS_P,
                   CONSTANTS_SP,
                   TRAVERSAL_out1,
                   RETURN_VAL,
                   RETURN_EXISTS,
                   PIVOT_S,
-                  PIVOT_OS
-                },
+                  PIVOT_OS, PIVOT_NA // on ?v0 and ?v1
+                },//F5
                 {
                 CONSTANTS_PO,
                 CONSTANTS_P,RANGE_S,
@@ -82,12 +87,14 @@ public class SPARQLQueryEvaluatorTest {
                 RETURN_AGG, RETURN_EXISTS,
                 PIVOT_OS,
                 PIVOT_S
-    },{
+                }, //query_32
+                {
                 CONSTANTS_P, CONSTANTS_PO,
                 TRAVERSAL_inK, TRAVERSAL_out1,RETURN_EXISTS,
                 RETURN_AGG,
                 PIVOT_S
-        }, {CONSTANTS_P,
+                }, //query_37
+                {CONSTANTS_P,
                 CONSTANTS_PO,
                 TRAVERSAL_out1,
                 TRAVERSAL_in1,
@@ -95,7 +102,9 @@ public class SPARQLQueryEvaluatorTest {
                 RETURN_VAL,
                 RETURN_EXISTS,
                 PIVOT_S,
-                PIVOT_OS},
+                PIVOT_OS,
+                PIVOT_NS //on ?person
+                }, //query_01
                 {
                         CONSTANTS_P,
                         CONSTANTS_PO,

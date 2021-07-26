@@ -21,6 +21,7 @@ public enum AccessPattern {
     TRAVERSAL_inSTAR("Traversal", "* o->s"),
     RETURN_VAL("Return","All Values"),
     RETURN_DISTINCT("Return","Distinct Values"),
+    RETURN_SORTED("Return","Sorted Values"),
     RETURN_EXISTS("Return","Existence"),
     RETURN_AGG("Return","Aggregate"),
     PIVOT_S("Pivot","S"),
@@ -28,6 +29,8 @@ public enum AccessPattern {
     PIVOT_O("Pivot","O"),
     PIVOT_OP("Pivot","OP"),
     PIVOT_SP("Pivot","SP"),
+    PIVOT_NS("Pivot","N-way Star"),
+    PIVOT_NA("Pivot","N-way Arbitrary shape"),
     WRITE_I("Write","Insert"),
     WRITE_D("Write","Delete")
     ;
